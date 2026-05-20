@@ -1,8 +1,9 @@
 export const cityStreetOptions: Record<string, string[]> = {
-  Dhaka: ["Mirpur Road", "Dhanmondi 27", "Gulshan Avenue", "Banani Road 11"],
-  Chattogram: ["Agrabad Access Road", "Nasirabad Avenue", "CDA Avenue", "O. R. Nizam Road"],
-  Sylhet: ["Zindabazar Road", "Amberkhana Road", "Subid Bazar", "Shahjalal Road"],
-  Rajshahi: ["Shaheb Bazar Road", "Kazihata Road", "Uposhohor Road", "Sagarpara Road"],
+  Vilnius: ["Gedimino Avenue", "Pilies Street", "Konstitucijos Avenue", "Ukmergės Street"],
+  Kaunas: ["Laisvės Avenue", "Savanorių Avenue", "K. Donelaičio Street", "Raudondvario Road"],
+  Klaipėda: ["Taikos Avenue", "H. Manto Street", "Tiltų Street", "Minijos Street"],
+  Šiauliai: ["Tilžės Street", "Vilniaus Street", "Aušros Avenue", "Dvaro Street"],
+  Panevėžys: ["Respublikos Street", "Klaipėdos Street", "Smėlynės Street", "Ramygalos Street"],
 };
 
 export const cityOptions = Object.keys(cityStreetOptions);
