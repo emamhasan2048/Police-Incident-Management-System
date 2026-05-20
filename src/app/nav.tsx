@@ -7,11 +7,11 @@ const menuItems = [
   },
   {
     label: "Drivers",
-    href: "/all-cases",
+    href: "/drivers/list",
     children: [
-      { label: "Driver List", href: "/all-cases" },
-      { label: "Driver Details", href: "/queries?license=" },
-      { label: "Driver Violations", href: "/queries?license=" },
+      { label: "Driver List", href: "/drivers/list" },
+      { label: "Driver Details", href: "/drivers/details" },
+      { label: "Driver Violations", href: "/drivers/violations" },
     ],
   },
   {
