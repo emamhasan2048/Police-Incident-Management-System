@@ -1,4 +1,5 @@
 import { getCasesForPage } from "@/lib/cases";
+import { DatabaseError } from "../database-error";
 import { AppNav } from "../nav";
 import { CasesBrowser } from "./components/cases-browser";
 
@@ -30,14 +31,6 @@ export default async function AllCasesPage() {
 
       <CasesBrowser cases={cases} />
     </main>
-  );
-}
-
-function DatabaseError() {
-  return (
-    <div className="mb-5 rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">
-      Database connection reached Atlas, but authentication failed. Update the Database Access user/password in .env.local, then restart the app.
-    </div>
   );
 }
 

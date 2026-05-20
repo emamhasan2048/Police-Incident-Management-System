@@ -1,8 +1,7 @@
 import mongoose from "mongoose"
 
-const MONGO_DB = "future_cases"
-const MONGODB_URI =
-  "mongodb://case_record:O1IP0oNcW7AYJnsA@cluster0-shard-00-00.xanfm.mongodb.net:27017,cluster0-shard-00-01.xanfm.mongodb.net:27017,cluster0-shard-00-02.xanfm.mongodb.net:27017/future_cases?ssl=true&replicaSet=atlas-665p7o-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0"
+const MONGO_DB = process.env.MONGO_DB ?? "future_cases"
+const MONGODB_URI = process.env.MONGODB_URI
 
 type MongooseCache = {
   conn: typeof mongoose | null
@@ -21,11 +20,16 @@ const cached = globalWithMongoose.mongooseCache ?? {
 globalWithMongoose.mongooseCache = cached
 
 export async function connectMongo() {
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not configured")
+  }
+
   if (cached.conn) return cached.conn
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       dbName: MONGO_DB,
+      authSource: "admin",
       serverSelectionTimeoutMS: 5000,
     })
   }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCasesForPage } from "@/lib/cases";
 import { badgeTone, formatViolation, violationOptions } from "@/lib/violations";
+import { DatabaseError } from "../database-error";
 import { AppNav } from "../nav";
 
 export const dynamic = "force-dynamic";
@@ -96,14 +97,6 @@ export default async function OverviewPage() {
         </div>
       </section>
     </main>
-  );
-}
-
-function DatabaseError() {
-  return (
-    <div className="mb-5 rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">
-      Database connection reached Atlas, but authentication failed. Update the Database Access user/password in .env.local, then restart the app.
-    </div>
   );
 }
 

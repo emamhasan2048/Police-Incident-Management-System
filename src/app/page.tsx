@@ -89,7 +89,7 @@ export default async function RegisterPage({ searchParams }: Props) {
 
         <div className="mt-7 flex flex-wrap gap-3">
           <button className="nav-button" type="submit">
-            ✓ Register case
+            Register case
           </button>
           <button className="nav-button" type="reset">
             Clear

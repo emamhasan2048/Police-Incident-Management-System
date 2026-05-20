@@ -16,7 +16,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         {children}
         <footer className="border-t border-[#333331] px-6 py-6 text-center text-sm font-bold text-[var(--muted)]">
-          Developed by Emam Hasan
+          Developed by Hasan Emam
         </footer>
       </body>
     </html>

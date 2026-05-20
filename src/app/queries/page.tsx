@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCases, getCasesForPage } from "@/lib/cases";
 import { badgeTone } from "@/lib/violations";
+import { DatabaseError } from "../database-error";
 import { AppNav } from "../nav";
 
 type Props = {
@@ -62,7 +63,7 @@ export default async function QueriesPage({ searchParams }: Props) {
       {databaseError && <DatabaseError />}
 
       <div className="space-y-5">
-        <QueryCard icon="▣" title="Who owns a vehicle with registration number?">
+        <QueryCard icon="#" title="Who owns a vehicle with registration number?">
           <form className="grid gap-3 md:grid-cols-[1fr_auto]">
             <input className="field" name="registration" placeholder="e.g. LTU-4821" defaultValue={registration} />
             <button className="nav-button justify-center" type="submit">
@@ -72,7 +73,7 @@ export default async function QueriesPage({ searchParams }: Props) {
           {registration && <OwnerResults cases={byRegistration} />}
         </QueryCard>
 
-        <QueryCard icon="◉" title="Who owns a vehicle by model & color?">
+        <QueryCard icon="*" title="Who owns a vehicle by model & color?">
           <form className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
             <input className="field" name="model" placeholder="Model e.g. VW Golf" defaultValue={getParam(params, "model")} />
             <input className="field" name="color" placeholder="Color e.g. Gray" defaultValue={getParam(params, "color")} />
@@ -83,7 +84,7 @@ export default async function QueriesPage({ searchParams }: Props) {
           {(model || color) && <OwnerResults cases={byModelColor} />}
         </QueryCard>
 
-        <QueryCard icon="▤" title="Violations committed by a driver (license no.)">
+        <QueryCard icon="!" title="Violations committed by a driver (license no.)">
           <form className="grid gap-3 md:grid-cols-[1fr_auto]">
             <input className="field" name="license" placeholder="e.g. LT-00241" defaultValue={license} />
             <button className="nav-button justify-center" type="submit">
@@ -93,7 +94,7 @@ export default async function QueriesPage({ searchParams }: Props) {
           {license && <ViolationResults cases={byLicense} />}
         </QueryCard>
 
-        <QueryCard icon="♙" title="List of offenders (drivers with violations)">
+        <QueryCard icon="@" title="List of offenders (drivers with violations)">
           <form>
             <input name="show" type="hidden" value="offenders" />
             <button className="nav-button" type="submit">
@@ -103,7 +104,7 @@ export default async function QueriesPage({ searchParams }: Props) {
           {showOffenders && <OffenderResults cases={offenders} />}
         </QueryCard>
 
-        <QueryCard icon="▥" title="Number of vehicles by model and year">
+        <QueryCard icon="%" title="Number of vehicles by model and year">
           <form>
             <input name="show" type="hidden" value="stats" />
             <button className="nav-button" type="submit">
@@ -114,14 +115,6 @@ export default async function QueriesPage({ searchParams }: Props) {
         </QueryCard>
       </div>
     </main>
-  );
-}
-
-function DatabaseError() {
-  return (
-    <div className="mb-5 rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">
-      Database connection reached Atlas, but authentication failed. Update the Database Access user/password in .env.local, then restart the app.
-    </div>
   );
 }
 
@@ -149,7 +142,7 @@ function OwnerResults({ cases }: { cases: Awaited<ReturnType<typeof getCases>> }
           <div className="text-base font-extrabold">{item.driverName}</div>
           <div className="mt-1 text-[#7fb1ef]">{item.registrationNumber}</div>
           <div className="mt-2 text-[var(--muted)]">
-            {item.vehicleModel} · {item.color} · {item.manufactureYear}
+            {item.vehicleModel} / {item.color} / {item.manufactureYear}
           </div>
         </Link>
       ))}
