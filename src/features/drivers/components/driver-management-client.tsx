@@ -15,6 +15,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
   const [editingDriver, setEditingDriver] = useState<DriverRecord | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [dialogError, setDialogError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function refreshDrivers() {
@@ -24,6 +25,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
   function openCreateDialog() {
     setEditingDriver(null);
     setError("");
+    setDialogError("");
     setMessage("");
     setDialogOpen(true);
   }
@@ -31,6 +33,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
   function openEditDialog(driver: DriverRecord) {
     setEditingDriver(driver);
     setError("");
+    setDialogError("");
     setMessage("");
     setDialogOpen(true);
   }
@@ -38,6 +41,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
   async function handleSaveDriver(values: DriverFormValues) {
     setIsSubmitting(true);
     setError("");
+    setDialogError("");
     setMessage("");
 
     try {
@@ -47,7 +51,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
       setEditingDriver(null);
       setMessage(editingDriver ? "Driver updated successfully." : "Driver created successfully.");
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : "Driver could not be saved.");
+      setDialogError(saveError instanceof Error ? saveError.message : "Driver could not be saved.");
     } finally {
       setIsSubmitting(false);
     }
@@ -80,25 +84,31 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
 
   return (
     <div className="grid gap-6">
-      <div className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-[var(--panel)] p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 rounded-3xl border border-zinc-200 bg-white p-6 shadow-[0_18px_50px_rgba(16,24,40,0.07)] sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Driver Management</p>
-          <h2 className="text-xl font-extrabold">Manage registered drivers</h2>
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Driver Management</p>
+          <h2 className="text-xl font-extrabold text-zinc-950">Manage registered drivers</h2>
         </div>
         <AddDriverButton onClick={openCreateDialog} />
       </div>
 
-      {error && <div className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">{error}</div>}
-      {message && <div className="rounded-lg border border-emerald-700 bg-emerald-950/40 px-4 py-3 text-sm font-extrabold text-emerald-200">{message}</div>}
+      {error && <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-extrabold text-red-700">{error}</div>}
+      {message && <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-extrabold text-emerald-700">{message}</div>}
 
       <DriverTable drivers={drivers} onDelete={handleDeleteDriver} onEdit={openEditDialog} />
 
       <DriverFormDialog
         defaultValues={dialogDefaults}
+        errorMessage={dialogError}
         isSubmitting={isSubmitting}
         mode={editingDriver ? "edit" : "create"}
         open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        onOpenChange={(open) => {
+          setDialogOpen(open);
+          if (!open) {
+            setDialogError("");
+          }
+        }}
         onSubmit={handleSaveDriver}
       />
     </div>

@@ -12,6 +12,10 @@ import { driverFormSchema, type DriverFormValues } from "@/lib/validations/drive
 
 const defaultCity = cityOptions[0] ?? "";
 const defaultStreet = cityStreetOptions[defaultCity]?.[0] ?? "";
+const fieldClassName =
+  "h-14 rounded-2xl bg-zinc-50/50 px-4 text-zinc-900 shadow-sm transition-all duration-200 placeholder:text-zinc-400 hover:border-zinc-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10";
+const invalidFieldClassName = "border-red-300 focus:border-red-500 focus:ring-red-500/10";
+const validFieldClassName = "border-zinc-300";
 
 export const emptyDriverFormValues: DriverFormValues = {
   firstName: "",
@@ -44,7 +48,7 @@ export function DriverForm({ defaultValues = emptyDriverFormValues, isSubmitting
   return (
     <Form {...form}>
       <form className="grid gap-5" noValidate onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-7 sm:grid-cols-2">
           <Controller
             control={form.control}
             name="firstName"
@@ -65,9 +69,10 @@ export function DriverForm({ defaultValues = emptyDriverFormValues, isSubmitting
             name="city"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel>City</FormLabel>
+                <FormLabel className="mb-2 text-sm font-semibold text-zinc-700">City</FormLabel>
                 <FormControl>
                   <Select
+                    className={fieldClass(Boolean(fieldState.error))}
                     invalid={Boolean(fieldState.error)}
                     value={field.value}
                     onBlur={field.onBlur}
@@ -93,9 +98,9 @@ export function DriverForm({ defaultValues = emptyDriverFormValues, isSubmitting
             name="street"
             render={({ field, fieldState }) => (
               <FormItem>
-                <FormLabel>Street</FormLabel>
+                <FormLabel className="mb-2 text-sm font-semibold text-zinc-700">Street</FormLabel>
                 <FormControl>
-                  <Select invalid={Boolean(fieldState.error)} {...field}>
+                  <Select className={fieldClass(Boolean(fieldState.error))} invalid={Boolean(fieldState.error)} {...field}>
                     {streets.map((street) => (
                       <option key={street} value={street}>
                         {street}
@@ -128,11 +133,19 @@ export function DriverForm({ defaultValues = emptyDriverFormValues, isSubmitting
           />
         </div>
 
-        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <Button onClick={onCancel} type="button">
+        <div className="mt-10 flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">
+          <Button
+            className="h-12 rounded-2xl border border-zinc-300 bg-white px-6 font-semibold text-zinc-700 shadow-sm transition-all duration-200 hover:-translate-y-[1px] hover:bg-zinc-100"
+            onClick={onCancel}
+            type="button"
+          >
             Cancel
           </Button>
-          <Button disabled={isSubmitting} type="submit">
+          <Button
+            className="h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 font-semibold text-white shadow-lg shadow-blue-500/20 transition-all duration-200 hover:-translate-y-[1px] hover:from-blue-500 hover:to-indigo-500 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+            disabled={isSubmitting}
+            type="submit"
+          >
             {isSubmitting ? "Saving..." : submitLabel}
           </Button>
         </div>
@@ -158,11 +171,22 @@ function TextField({
 }) {
   return (
     <FormItem>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel className="mb-2 text-sm font-semibold text-zinc-700">{label}</FormLabel>
       <FormControl>
-        <Input invalid={Boolean(error)} onBlur={onBlur} onChange={(event) => onChange(event.target.value)} type={type} value={value} />
+        <Input
+          className={fieldClass(Boolean(error))}
+          invalid={Boolean(error)}
+          onBlur={onBlur}
+          onChange={(event) => onChange(event.target.value)}
+          type={type}
+          value={value}
+        />
       </FormControl>
       <FormMessage message={error} />
     </FormItem>
   );
+}
+
+function fieldClass(invalid: boolean) {
+  return `${fieldClassName} ${invalid ? invalidFieldClassName : validFieldClassName}`;
 }

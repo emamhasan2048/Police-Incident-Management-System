@@ -39,8 +39,8 @@ export default async function DriverListPage() {
       <AppNav />
 
       <div className="mb-6">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Drivers</p>
-        <h1 className="text-2xl font-extrabold">Driver List</h1>
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Drivers</p>
+        <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950">Driver List</h1>
       </div>
 
       {databaseError && <DatabaseError />}

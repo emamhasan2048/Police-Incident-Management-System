@@ -26,8 +26,8 @@ export default async function OverviewPage() {
       <AppNav />
 
       <div className="mb-7">
-        <p className="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Modern overview</p>
-        <h1 className="text-2xl font-extrabold">Case activity dashboard</h1>
+        <p className="mb-2 text-sm font-bold uppercase tracking-[0.18em] text-blue-600">Modern overview</p>
+        <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950">Case activity dashboard</h1>
       </div>
 
       {databaseError && <DatabaseError />}
@@ -49,7 +49,7 @@ export default async function OverviewPage() {
           ) : (
             latestCases.map((item) => (
               <Link
-                className="grid gap-2 border-b border-[#333331] px-5 py-4 text-sm font-bold last:border-b-0 md:grid-cols-[1fr_0.7fr_0.7fr_0.7fr]"
+                className="grid gap-2 border-b border-zinc-100 px-5 py-4 text-sm font-bold last:border-b-0 md:grid-cols-[1fr_0.7fr_0.7fr_0.7fr]"
                 href={`/cases/${item.registrationNumber}`}
                 key={item.id}
               >
@@ -63,7 +63,7 @@ export default async function OverviewPage() {
                     {item.violationCode}
                   </span>
                 </div>
-                <div className={item.status === "completed" ? "text-emerald-300" : "text-amber-300"}>
+                <div className={item.status === "completed" ? "text-emerald-600" : "text-amber-600"}>
                   {item.status === "completed" ? "Completed" : "Pending"}
                 </div>
               </Link>
@@ -86,8 +86,8 @@ export default async function OverviewPage() {
                       <span>{formatViolation(item.code)}</span>
                       <span className="text-[var(--muted)]">{item.count}</span>
                     </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-[#30302e]">
-                      <div className="h-full rounded-full bg-[#7fb1ef]" style={{ width: `${percent}%` }} />
+                    <div className="h-2 overflow-hidden rounded-full bg-zinc-100">
+                      <div className="h-full rounded-full bg-blue-600" style={{ width: `${percent}%` }} />
                     </div>
                   </div>
                 );
@@ -102,10 +102,10 @@ export default async function OverviewPage() {
 
 function MetricCard({ label, value, tone = "neutral" }: { label: string; value: number | string; tone?: "neutral" | "amber" | "green" | "blue" }) {
   const tones = {
-    neutral: "text-white",
-    amber: "text-amber-300",
-    green: "text-emerald-300",
-    blue: "text-[#7fb1ef]",
+    neutral: "text-zinc-950",
+    amber: "text-amber-600",
+    green: "text-emerald-600",
+    blue: "text-blue-600",
   };
 
   return (

@@ -66,7 +66,7 @@ export default async function CaseDetailsPage({ params }: Props) {
               <div>Date</div>
             </div>
             {cases.map((item, index) => (
-              <div className="grid grid-cols-[0.4fr_1fr_1fr] border-t border-[#333331] px-5 py-3 text-sm font-extrabold" key={item.id}>
+              <div className="grid grid-cols-[0.4fr_1fr_1fr] border-t border-zinc-100 px-5 py-3 text-sm font-extrabold" key={item.id}>
                 <div>{index + 1}</div>
                 <div>
                   <span className={`rounded-full px-3 py-1 text-base ${badgeTone(item.violationCode)}`}>{item.violationCode}</span>

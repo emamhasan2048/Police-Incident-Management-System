@@ -138,9 +138,9 @@ function OwnerResults({ cases }: { cases: Awaited<ReturnType<typeof getCases>> }
   return (
     <div className="mt-4 grid gap-3 md:grid-cols-2">
       {owners.map((item) => (
-        <Link className="rounded-lg border border-[#3d3d3a] bg-[#242422] p-4 text-sm font-bold" href={`/cases/${item.registrationNumber}`} key={item.id}>
+        <Link className="rounded-2xl border border-zinc-200 bg-white shadow-sm p-4 text-sm font-bold" href={`/cases/${item.registrationNumber}`} key={item.id}>
           <div className="text-base font-extrabold">{item.driverName}</div>
-          <div className="mt-1 text-[#7fb1ef]">{item.registrationNumber}</div>
+          <div className="mt-1 text-blue-600">{item.registrationNumber}</div>
           <div className="mt-2 text-[var(--muted)]">
             {item.vehicleModel} / {item.color} / {item.manufactureYear}
           </div>
@@ -156,9 +156,9 @@ function ViolationResults({ cases }: { cases: Awaited<ReturnType<typeof getCases
   return (
     <div className="mt-4 overflow-hidden rounded-lg border border-[#3d3d3a]">
       {cases.map((item) => (
-        <Link className="grid gap-2 border-b border-[#333331] p-4 text-sm font-bold last:border-b-0 md:grid-cols-[1fr_0.7fr_0.7fr_0.7fr]" href={`/cases/${item.registrationNumber}`} key={item.id}>
+        <Link className="grid gap-2 border-b border-zinc-100 p-4 text-sm font-bold last:border-b-0 md:grid-cols-[1fr_0.7fr_0.7fr_0.7fr]" href={`/cases/${item.registrationNumber}`} key={item.id}>
           <span>{item.driverName}</span>
-          <span className="text-[#7fb1ef]">{item.registrationNumber}</span>
+          <span className="text-blue-600">{item.registrationNumber}</span>
           <span>{item.violationDate}</span>
           <span>
             <span className={`rounded-full px-3 py-1 text-xs ${badgeTone(item.violationCode)}`}>{item.violationCode}</span>
@@ -175,7 +175,7 @@ function OffenderResults({ cases }: { cases: Awaited<ReturnType<typeof getCases>
   return (
     <div className="mt-4 grid gap-3 md:grid-cols-2">
       {cases.map((item) => (
-        <div className="rounded-lg border border-[#3d3d3a] bg-[#242422] p-4 text-sm font-bold" key={item.licenseNumber}>
+        <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm p-4 text-sm font-bold" key={item.licenseNumber}>
           <div className="text-base font-extrabold">{item.driverName}</div>
           <div className="mt-1 text-[var(--muted)]">{item.licenseNumber}</div>
         </div>
@@ -190,10 +190,10 @@ function StatsResults({ stats }: { stats: { model: string; year: number; count: 
   return (
     <div className="mt-4 overflow-hidden rounded-lg border border-[#3d3d3a]">
       {stats.map((item) => (
-        <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-[#333331] p-4 text-sm font-bold last:border-b-0" key={`${item.model}-${item.year}`}>
+        <div className="grid grid-cols-[1fr_auto_auto] gap-3 border-b border-zinc-100 p-4 text-sm font-bold last:border-b-0" key={`${item.model}-${item.year}`}>
           <span>{item.model}</span>
           <span className="text-[var(--muted)]">{item.year}</span>
-          <span className="text-[#7fb1ef]">{item.count}</span>
+          <span className="text-blue-600">{item.count}</span>
         </div>
       ))}
     </div>
@@ -201,5 +201,5 @@ function StatsResults({ stats }: { stats: { model: string; year: number; count: 
 }
 
 function EmptyResult() {
-  return <div className="mt-4 rounded-lg border border-[#3d3d3a] bg-[#242422] p-4 text-sm font-bold text-[var(--muted)]">No matching data found.</div>;
+  return <div className="mt-4 rounded-2xl border border-zinc-200 bg-white shadow-sm p-4 text-sm font-bold text-[var(--muted)]">No matching data found.</div>;
 }

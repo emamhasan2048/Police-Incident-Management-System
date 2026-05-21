@@ -25,18 +25,18 @@ export default function HomePage() {
       <AppNav />
 
       <section className="mb-7">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Command dashboard</p>
-        <h1 className="max-w-3xl text-3xl font-extrabold">Police Incident Management System</h1>
-        <p className="mt-3 max-w-2xl text-sm font-bold leading-6 text-[var(--muted)]">
-          Manage driver profiles, linked vehicles, and violation records from one dark-themed incident registry.
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Command dashboard</p>
+        <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-zinc-950">Police Incident Management System</h1>
+        <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-zinc-500">
+          Manage driver profiles, linked vehicles, and violation records from one clean operational dashboard.
         </p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
         {dashboardCards.map((card) => (
-          <Link className="card block p-5 transition hover:-translate-y-1 hover:border-[#7fb1ef]" href={card.href} key={card.title}>
-            <h2 className="text-lg font-extrabold">{card.title}</h2>
-            <p className="mt-3 text-sm font-bold leading-6 text-[var(--muted)]">{card.description}</p>
+          <Link className="card block p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_24px_70px_rgba(37,99,235,0.12)]" href={card.href} key={card.title}>
+            <h2 className="text-lg font-extrabold text-zinc-950">{card.title}</h2>
+            <p className="mt-3 text-sm font-semibold leading-6 text-zinc-500">{card.description}</p>
           </Link>
         ))}
       </section>

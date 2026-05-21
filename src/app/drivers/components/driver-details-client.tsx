@@ -68,8 +68,8 @@ export function DriverDetailsClient() {
       <Form {...form}>
         <form className="card grid gap-4 p-5" noValidate onSubmit={form.handleSubmit(searchDriver)}>
           <div>
-            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Driver Details</p>
-            <h1 className="text-2xl font-extrabold">Search by last name or license number</h1>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Driver Details</p>
+            <h1 className="text-2xl font-extrabold text-zinc-950">Search by last name or license number</h1>
           </div>
 
           <div className="grid gap-3 md:grid-cols-[1fr_auto]">
@@ -93,14 +93,14 @@ export function DriverDetailsClient() {
         </form>
       </Form>
 
-      {error && <div className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">{error}</div>}
+      {error && <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-extrabold text-red-700">{error}</div>}
 
       {searched && !driver && !error && <div className="card p-5 text-sm font-bold text-[var(--muted)]">No driver found for that last name or license number.</div>}
 
       {driver && (
         <section className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="card p-5">
-            <h2 className="mb-4 text-base font-extrabold">Driver profile</h2>
+            <h2 className="mb-4 text-base font-extrabold text-zinc-950">Driver profile</h2>
             <div className="grid gap-3 text-sm font-bold">
               <Info label="Name" value={`${driver.firstName} ${driver.lastName}`} />
               <Info label="License" value={driver.license} />
@@ -130,10 +130,10 @@ export function DriverDetailsClient() {
                   </thead>
                   <tbody>
                     {vehicles.map((vehicle) => (
-                      <tr className="border-t border-[#333331]" key={vehicle._id}>
-                        <td className="px-5 py-4 font-extrabold text-[#7fb1ef]">{vehicle.registrationNumber}</td>
+                      <tr className="border-t border-zinc-100" key={vehicle._id}>
+                        <td className="px-5 py-4 font-extrabold text-blue-600">{vehicle.registrationNumber}</td>
                         <td className="px-5 py-4 font-bold">{vehicle.model}</td>
-                        <td className="px-5 py-4 font-bold text-[var(--muted)]">{vehicle.color}</td>
+                        <td className="px-5 py-4 font-bold text-zinc-500">{vehicle.color}</td>
                         <td className="px-5 py-4 font-bold">{vehicle.manufactureYear}</td>
                       </tr>
                     ))}
@@ -150,9 +150,9 @@ export function DriverDetailsClient() {
 
 function Info({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-[#333331] bg-[#242422] p-3">
-      <div className="text-xs uppercase tracking-[0.14em] text-[var(--muted)]">{label}</div>
-      <div className="mt-1 text-base text-white">{value}</div>
+    <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4">
+      <div className="text-xs uppercase tracking-[0.14em] text-zinc-500">{label}</div>
+      <div className="mt-1 text-base text-zinc-950">{value}</div>
     </div>
   );
 }

@@ -13,7 +13,13 @@ export const DialogOverlay = forwardRef<
   ElementRef<typeof DialogPrimitive.Overlay>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(function DialogOverlay({ className, ...props }, ref) {
-  return <DialogPrimitive.Overlay ref={ref} className={cn("dialog-overlay", className)} {...props} />;
+  return (
+    <DialogPrimitive.Overlay
+      ref={ref}
+      className={cn("fixed inset-0 z-50 bg-zinc-950/30 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out", className)}
+      {...props}
+    />
+  );
 });
 
 export const DialogContent = forwardRef<
@@ -23,7 +29,14 @@ export const DialogContent = forwardRef<
   return (
     <DialogPortal>
       <DialogOverlay />
-      <DialogPrimitive.Content ref={ref} className={cn("dialog-content", className)} {...props}>
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(
+          "fixed left-1/2 top-1/2 z-[51] max-h-[90vh] w-[calc(100vw-2rem)] max-w-5xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl border border-zinc-200 bg-white p-10 shadow-[0_20px_60px_rgba(0,0,0,0.08)] outline-none data-[state=open]:animate-in data-[state=closed]:animate-out",
+          className,
+        )}
+        {...props}
+      >
         {children}
       </DialogPrimitive.Content>
     </DialogPortal>
@@ -42,12 +55,12 @@ export const DialogTitle = forwardRef<
   ElementRef<typeof DialogPrimitive.Title>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(function DialogTitle({ className, ...props }, ref) {
-  return <DialogPrimitive.Title ref={ref} className={cn("text-xl font-extrabold", className)} {...props} />;
+  return <DialogPrimitive.Title ref={ref} className={cn("text-4xl font-bold tracking-tight text-zinc-900", className)} {...props} />;
 });
 
 export const DialogDescription = forwardRef<
   ElementRef<typeof DialogPrimitive.Description>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(function DialogDescription({ className, ...props }, ref) {
-  return <DialogPrimitive.Description ref={ref} className={cn("text-sm font-bold text-[var(--muted)]", className)} {...props} />;
+  return <DialogPrimitive.Description ref={ref} className={cn("mt-2 text-base text-zinc-500", className)} {...props} />;
 });

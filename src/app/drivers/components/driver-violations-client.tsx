@@ -63,8 +63,8 @@ export function DriverViolationsClient() {
       <Form {...form}>
         <form className="card grid gap-4 p-5" noValidate onSubmit={form.handleSubmit(searchViolations)}>
           <div>
-            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Driver Violations</p>
-            <h1 className="text-2xl font-extrabold">Lookup violations by driver last name</h1>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Driver Violations</p>
+            <h1 className="text-2xl font-extrabold text-zinc-950">Lookup violations by driver last name</h1>
           </div>
 
           <div className="grid gap-3 md:grid-cols-[1fr_auto]">
@@ -88,7 +88,7 @@ export function DriverViolationsClient() {
         </form>
       </Form>
 
-      {error && <div className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">{error}</div>}
+      {error && <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-extrabold text-red-700">{error}</div>}
 
       {searched && !driver && !error && <div className="card p-5 text-sm font-bold text-[var(--muted)]">No driver found for that last name.</div>}
 
@@ -96,7 +96,7 @@ export function DriverViolationsClient() {
         <div className="card overflow-hidden">
           <div className="border-b border-[var(--border)] px-5 py-4">
             <h2 className="text-base font-extrabold">
-              Violations for {driver.firstName} {driver.lastName}
+              <span className="text-zinc-950">Violations for {driver.firstName} {driver.lastName}</span>
             </h2>
           </div>
           {violations.length === 0 ? (
@@ -113,11 +113,11 @@ export function DriverViolationsClient() {
                 </thead>
                 <tbody>
                   {violations.map((violation) => (
-                    <tr className="border-t border-[#333331]" key={violation._id}>
+                    <tr className="border-t border-zinc-100" key={violation._id}>
                       <td className="px-5 py-4 font-bold">{violation.violationMessage}</td>
-                      <td className="px-5 py-4 font-bold text-[var(--muted)]">{new Date(violation.date).toLocaleDateString()}</td>
+                      <td className="px-5 py-4 font-bold text-zinc-500">{new Date(violation.date).toLocaleDateString()}</td>
                       <td className="px-5 py-4">
-                        <span className="rounded-full bg-red-900/70 px-3 py-1 text-xs font-extrabold text-red-200">{violation.violationCode}</span>
+                        <span className="rounded-full bg-red-50 px-3 py-1 text-xs font-extrabold text-red-700">{violation.violationCode}</span>
                       </td>
                     </tr>
                   ))}

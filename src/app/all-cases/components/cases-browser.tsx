@@ -67,11 +67,11 @@ export function CasesBrowser({ cases }: { cases: CaseView[] }) {
         ) : (
           filteredCases.map((item) => (
             <div
-              className="grid gap-3 border-b border-[#333331] px-5 py-3 text-sm font-bold last:border-b-0 lg:grid-cols-[1.1fr_0.8fr_0.8fr_0.8fr_0.9fr_1.2fr] lg:items-center"
+              className="grid gap-3 border-b border-zinc-100 px-5 py-3 text-sm font-bold last:border-b-0 lg:grid-cols-[1.1fr_0.8fr_0.8fr_0.8fr_0.9fr_1.2fr] lg:items-center"
               key={item.id}
             >
               <div className="truncate">{item.driverName}</div>
-              <Link className="text-[#7fb1ef]" href={`/cases/${item.registrationNumber}`}>
+              <Link className="text-blue-600" href={`/cases/${item.registrationNumber}`}>
                 {item.registrationNumber}
               </Link>
               <div>{item.violationDate}</div>
@@ -100,10 +100,10 @@ function FilterButton({
 }) {
   return (
     <button
-      className={`rounded-md border px-3 py-2 text-xs font-extrabold transition ${
+      className={`rounded-xl border px-3 py-2 text-xs font-extrabold transition ${
         active
-          ? "border-[#7fb1ef] bg-[#7fb1ef] text-[#101412]"
-          : "border-[#50504d] bg-[#2c2c2a] text-[var(--muted)] hover:border-[#7fb1ef]"
+          ? "border-blue-600 bg-blue-600 text-white"
+          : "border-zinc-300 bg-white text-zinc-500 hover:border-blue-300"
       }`}
       onClick={onClick}
       type="button"

@@ -12,13 +12,13 @@ type DriverTableProps = {
 export function DriverTable({ drivers, onDelete, onEdit }: DriverTableProps) {
   return (
     <div className="card overflow-hidden">
-      <div className="border-b border-[var(--border)] px-5 py-4">
-        <h2 className="text-base font-extrabold">Driver List</h2>
+      <div className="border-b border-zinc-200 px-5 py-4">
+        <h2 className="text-base font-extrabold text-zinc-950">Driver List</h2>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full min-w-[920px] border-collapse text-left text-sm">
-          <thead className="bg-[var(--panel)] text-xs uppercase tracking-[0.14em] text-[var(--muted)]">
+          <thead className="bg-zinc-50 text-xs uppercase tracking-[0.14em] text-zinc-500">
             <tr>
               <th className="px-5 py-3">Name</th>
               <th className="px-5 py-3">License</th>
@@ -29,18 +29,18 @@ export function DriverTable({ drivers, onDelete, onEdit }: DriverTableProps) {
           <tbody>
             {drivers.length === 0 ? (
               <tr>
-                <td className="px-5 py-6 text-center font-bold text-[var(--muted)]" colSpan={4}>
+                <td className="px-5 py-6 text-center font-bold text-zinc-500" colSpan={4}>
                   No drivers found.
                 </td>
               </tr>
             ) : (
               drivers.map((driver) => (
-                <tr className="border-t border-[#333331]" key={driver._id}>
-                  <td className="px-5 py-4 font-extrabold">
+                <tr className="border-t border-zinc-100 transition hover:bg-zinc-50" key={driver._id}>
+                  <td className="px-5 py-4 font-extrabold text-zinc-950">
                     {driver.firstName} {driver.lastName}
                   </td>
-                  <td className="px-5 py-4 font-bold text-[#7fb1ef]">{driver.license}</td>
-                  <td className="px-5 py-4 font-bold text-[var(--muted)]">
+                  <td className="px-5 py-4 font-bold text-blue-600">{driver.license}</td>
+                  <td className="px-5 py-4 font-bold text-zinc-500">
                     {driver.houseNumber}, {driver.street}, {driver.city}
                     {driver.apartment ? `, Apt ${driver.apartment}` : ""}
                   </td>
@@ -49,7 +49,7 @@ export function DriverTable({ drivers, onDelete, onEdit }: DriverTableProps) {
                       <Button className="min-h-0 px-3 py-1.5 text-xs" onClick={() => onEdit(driver)} type="button">
                         Edit
                       </Button>
-                      <Button className="min-h-0 border-red-800 bg-red-950/40 px-3 py-1.5 text-xs text-red-200 hover:bg-red-900/50" onClick={() => onDelete(driver._id)} type="button">
+                      <Button className="min-h-0 border-red-200 bg-red-50 px-3 py-1.5 text-xs text-red-700 hover:bg-red-100" onClick={() => onDelete(driver._id)} type="button">
                         Delete
                       </Button>
                     </div>
