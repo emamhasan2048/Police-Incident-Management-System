@@ -1,13 +1,13 @@
-import { Schema, model, models, type Types } from "mongoose";
+import { Schema, model, models, type Model, type Types } from "mongoose";
 
 export type Violation = {
-  _id: string;
+  _id?: Types.ObjectId;
   violationMessage: string;
   date: Date;
   violationCode: string;
   driverId: Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 const violationSchema = new Schema<Violation>(
@@ -23,4 +23,6 @@ const violationSchema = new Schema<Violation>(
 violationSchema.index({ driverId: 1, date: -1 });
 violationSchema.index({ violationCode: 1 });
 
-export const ViolationModel = models.Violation || model<Violation>("Violation", violationSchema);
+const existingViolationModel = models.Violation as Model<Violation> | undefined;
+
+export const ViolationModel = existingViolationModel ?? model<Violation>("Violation", violationSchema);

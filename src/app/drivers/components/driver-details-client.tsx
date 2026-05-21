@@ -1,6 +1,12 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { driverDetailsSearchSchema, type DriverDetailsSearchValues } from "@/lib/validations/drivers";
 
 type DriverRecord = {
   _id: string;
@@ -21,20 +27,30 @@ type VehicleRecord = {
   manufactureYear: number;
 };
 
+type DriverDetailsResponse = {
+  driver?: DriverRecord;
+  vehicles?: VehicleRecord[];
+  message?: string;
+};
+
 export function DriverDetailsClient() {
-  const [query, setQuery] = useState("");
   const [driver, setDriver] = useState<DriverRecord | null>(null);
   const [vehicles, setVehicles] = useState<VehicleRecord[]>([]);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
 
-  async function searchDriver(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const form = useForm<DriverDetailsSearchValues>({
+    defaultValues: { query: "" },
+    mode: "onChange",
+    resolver: zodResolver(driverDetailsSearchSchema),
+  });
+
+  async function searchDriver(values: DriverDetailsSearchValues) {
     setError("");
     setSearched(true);
 
-    const response = await fetch(`/api/drivers/details?q=${encodeURIComponent(query)}`, { cache: "no-store" });
-    const data = await response.json();
+    const response = await fetch(`/api/drivers/details?q=${encodeURIComponent(values.query)}`, { cache: "no-store" });
+    const data = (await response.json()) as DriverDetailsResponse;
 
     if (!response.ok) {
       setError(data.message ?? "Driver lookup failed.");
@@ -43,31 +59,43 @@ export function DriverDetailsClient() {
       return;
     }
 
-    setDriver(data.driver);
+    setDriver(data.driver ?? null);
     setVehicles(data.vehicles ?? []);
   }
 
   return (
     <div className="grid gap-6">
-      <form className="card grid gap-4 p-5" onSubmit={searchDriver}>
-        <div>
-          <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Driver Details</p>
-          <h1 className="text-2xl font-extrabold">Search by last name or license number</h1>
-        </div>
+      <Form {...form}>
+        <form className="card grid gap-4 p-5" noValidate onSubmit={form.handleSubmit(searchDriver)}>
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Driver Details</p>
+            <h1 className="text-2xl font-extrabold">Search by last name or license number</h1>
+          </div>
 
-        <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-          <input className="field" onChange={(event) => setQuery(event.target.value)} placeholder="e.g. Hasan or LIC-1029" required value={query} />
-          <button className="nav-button justify-center" type="submit">
-            Search
-          </button>
-        </div>
-      </form>
+          <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+            <Controller
+              control={form.control}
+              name="query"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Last name or license number</FormLabel>
+                  <FormControl>
+                    <Input invalid={Boolean(fieldState.error)} placeholder="e.g. Hasan or LIC-1029" {...field} />
+                  </FormControl>
+                  <FormMessage message={fieldState.error?.message} />
+                </FormItem>
+              )}
+            />
+            <Button className="self-end justify-center" type="submit">
+              Search
+            </Button>
+          </div>
+        </form>
+      </Form>
 
       {error && <div className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">{error}</div>}
 
-      {searched && !driver && !error && (
-        <div className="card p-5 text-sm font-bold text-[var(--muted)]">No driver found for that last name or license number.</div>
-      )}
+      {searched && !driver && !error && <div className="card p-5 text-sm font-bold text-[var(--muted)]">No driver found for that last name or license number.</div>}
 
       {driver && (
         <section className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">

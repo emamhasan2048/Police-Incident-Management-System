@@ -1,32 +1,11 @@
 import { NextResponse } from "next/server";
 import { connectMongo } from "@/lib/mongodb";
+import { driverFormSchema } from "@/lib/validations/drivers";
 import { DriverModel } from "@/models/Driver";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
-
-type DriverPayload = {
-  firstName?: string;
-  lastName?: string;
-  license?: string;
-  city?: string;
-  street?: string;
-  houseNumber?: string;
-  apartment?: number | string | null;
-};
-
-function normalizeDriverPayload(payload: DriverPayload) {
-  return {
-    firstName: String(payload.firstName ?? "").trim(),
-    lastName: String(payload.lastName ?? "").trim(),
-    license: String(payload.license ?? "").trim(),
-    city: String(payload.city ?? "").trim(),
-    street: String(payload.street ?? "").trim(),
-    houseNumber: String(payload.houseNumber ?? "").trim(),
-    apartment: payload.apartment === "" || payload.apartment == null ? undefined : Number(payload.apartment),
-  };
-}
 
 function isDuplicateKeyError(error: unknown) {
   return typeof error === "object" && error !== null && "code" in error && error.code === 11000;
@@ -38,10 +17,14 @@ export async function PUT(request: Request, { params }: Props) {
   const { id } = await params;
 
   await connectMongo();
-  const payload = normalizeDriverPayload(await request.json());
+  const result = driverFormSchema.safeParse(await request.json());
+
+  if (!result.success) {
+    return NextResponse.json({ message: result.error.issues[0]?.message ?? "Please check the driver details." }, { status: 400 });
+  }
 
   try {
-    const driver = await DriverModel.findByIdAndUpdate(id, payload, { new: true, runValidators: true });
+    const driver = await DriverModel.findByIdAndUpdate(id, result.data, { new: true, runValidators: true });
 
     if (!driver) {
       return NextResponse.json({ message: "Driver not found." }, { status: 404 });

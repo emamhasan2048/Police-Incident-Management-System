@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { connectMongo } from "@/lib/mongodb";
 import { CaseModel, type CaseStatus, type ViolationCode } from "@/models/Case";
 
+const violationCodes: ViolationCode[] = ["SP-01", "RL-02", "PK-03", "NB-04", "DU-05", "PH-06", "OT-99"];
+
 export type CaseView = {
   id: string;
   driverName: string;
@@ -18,13 +20,13 @@ export type CaseView = {
 };
 
 type CaseDocumentView = Omit<CaseView, "id" | "violationDate"> & {
-  _id: { toString: () => string };
+  _id?: { toString: () => string };
   violationDate: Date;
 };
 
 function serializeCase(doc: CaseDocumentView): CaseView {
   return {
-    id: doc._id.toString(),
+    id: doc._id?.toString() ?? "",
     driverName: doc.driverName,
     licenseNumber: doc.licenseNumber,
     address: doc.address,
@@ -36,6 +38,11 @@ function serializeCase(doc: CaseDocumentView): CaseView {
     violationDate: doc.violationDate.toISOString().slice(0, 10),
     status: doc.status ?? "pending",
   };
+}
+
+function resolveViolationCode(value: FormDataEntryValue | null): ViolationCode {
+  const code = String(value || "SP-01");
+  return violationCodes.includes(code as ViolationCode) ? (code as ViolationCode) : "SP-01";
 }
 
 export async function getCases() {
@@ -81,7 +88,7 @@ export async function createCase(formData: FormData) {
       vehicleModel: String(formData.get("vehicleModel") || "").trim(),
       color: String(formData.get("color") || "").trim(),
       manufactureYear: Number(formData.get("manufactureYear")),
-      violationCode: String(formData.get("violationCode") || "SP-01"),
+      violationCode: resolveViolationCode(formData.get("violationCode")),
       violationDate: new Date(String(formData.get("violationDate") || new Date().toISOString())),
       status: "pending",
     });

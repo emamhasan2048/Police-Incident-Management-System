@@ -1,6 +1,12 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { driverViolationsSearchSchema, type DriverViolationsSearchValues } from "@/lib/validations/drivers";
 
 type DriverRecord = {
   _id: string;
@@ -16,20 +22,30 @@ type ViolationRecord = {
   violationCode: string;
 };
 
+type DriverViolationsResponse = {
+  driver?: DriverRecord;
+  violations?: ViolationRecord[];
+  message?: string;
+};
+
 export function DriverViolationsClient() {
-  const [lastName, setLastName] = useState("");
   const [driver, setDriver] = useState<DriverRecord | null>(null);
   const [violations, setViolations] = useState<ViolationRecord[]>([]);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
 
-  async function searchViolations(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const form = useForm<DriverViolationsSearchValues>({
+    defaultValues: { lastName: "" },
+    mode: "onChange",
+    resolver: zodResolver(driverViolationsSearchSchema),
+  });
+
+  async function searchViolations(values: DriverViolationsSearchValues) {
     setError("");
     setSearched(true);
 
-    const response = await fetch(`/api/drivers/violations?lastName=${encodeURIComponent(lastName)}`, { cache: "no-store" });
-    const data = await response.json();
+    const response = await fetch(`/api/drivers/violations?lastName=${encodeURIComponent(values.lastName)}`, { cache: "no-store" });
+    const data = (await response.json()) as DriverViolationsResponse;
 
     if (!response.ok) {
       setError(data.message ?? "Violation lookup failed.");
@@ -38,31 +54,43 @@ export function DriverViolationsClient() {
       return;
     }
 
-    setDriver(data.driver);
+    setDriver(data.driver ?? null);
     setViolations(data.violations ?? []);
   }
 
   return (
     <div className="grid gap-6">
-      <form className="card grid gap-4 p-5" onSubmit={searchViolations}>
-        <div>
-          <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Driver Violations</p>
-          <h1 className="text-2xl font-extrabold">Lookup violations by driver last name</h1>
-        </div>
+      <Form {...form}>
+        <form className="card grid gap-4 p-5" noValidate onSubmit={form.handleSubmit(searchViolations)}>
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-[#7fb1ef]">Driver Violations</p>
+            <h1 className="text-2xl font-extrabold">Lookup violations by driver last name</h1>
+          </div>
 
-        <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-          <input className="field" onChange={(event) => setLastName(event.target.value)} placeholder="e.g. Hasan" required value={lastName} />
-          <button className="nav-button justify-center" type="submit">
-            Search
-          </button>
-        </div>
-      </form>
+          <div className="grid gap-3 md:grid-cols-[1fr_auto]">
+            <Controller
+              control={form.control}
+              name="lastName"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormLabel>Driver last name</FormLabel>
+                  <FormControl>
+                    <Input invalid={Boolean(fieldState.error)} placeholder="e.g. Hasan" {...field} />
+                  </FormControl>
+                  <FormMessage message={fieldState.error?.message} />
+                </FormItem>
+              )}
+            />
+            <Button className="self-end justify-center" type="submit">
+              Search
+            </Button>
+          </div>
+        </form>
+      </Form>
 
       {error && <div className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm font-extrabold text-red-200">{error}</div>}
 
-      {searched && !driver && !error && (
-        <div className="card p-5 text-sm font-bold text-[var(--muted)]">No driver found for that last name.</div>
-      )}
+      {searched && !driver && !error && <div className="card p-5 text-sm font-bold text-[var(--muted)]">No driver found for that last name.</div>}
 
       {driver && (
         <div className="card overflow-hidden">

@@ -27,6 +27,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ driver: null, vehicles: [] });
   }
 
+  if (!driver._id) {
+    return NextResponse.json({ driver: null, vehicles: [] });
+  }
+
   const vehicles = await VehicleModel.find({ driverId: driver._id }).populate("driverId").sort({ createdAt: -1 }).lean();
   return NextResponse.json({ driver, vehicles });
 }

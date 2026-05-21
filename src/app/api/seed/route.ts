@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 import { connectMongo } from "@/lib/mongodb";
-import { CaseModel } from "@/models/Case";
-import { DriverModel } from "@/models/Driver";
-import { VehicleModel } from "@/models/Vehicle";
-import { ViolationModel } from "@/models/Violation";
+import { CaseModel, type TrafficCase } from "@/models/Case";
+import { DriverModel, type Driver } from "@/models/Driver";
+import { VehicleModel, type Vehicle } from "@/models/Vehicle";
+import { ViolationModel, type Violation } from "@/models/Violation";
 
-const sampleCases = [
+const sampleCases: TrafficCase[] = [
   {
     driverName: "Ingrida Šimkutė",
     licenseNumber: "LT-00562",
-    address: "Šiauliai, Tilžės 9",
+    address: "Šiauliai, Tilžės Street 9",
     registrationNumber: "LTU-2204",
     vehicleModel: "Renault Clio",
     color: "Red",
@@ -21,7 +21,7 @@ const sampleCases = [
   {
     driverName: "Aleksas Jonaitis",
     licenseNumber: "LT-00241",
-    address: "Vilnius, Gedimino 5",
+    address: "Vilnius, Gedimino Avenue 5",
     registrationNumber: "LTU-4821",
     vehicleModel: "VW Golf",
     color: "Gray",
@@ -33,7 +33,7 @@ const sampleCases = [
   {
     driverName: "Tomas Grigas",
     licenseNumber: "LT-00883",
-    address: "Kaunas, Laisvės 12",
+    address: "Kaunas, Laisvės Avenue 12",
     registrationNumber: "LTU-8832",
     vehicleModel: "Toyota Corolla",
     color: "White",
@@ -45,7 +45,7 @@ const sampleCases = [
   {
     driverName: "Ingrida Šimkutė",
     licenseNumber: "LT-00562",
-    address: "Šiauliai, Tilžės 9",
+    address: "Šiauliai, Tilžės Street 9",
     registrationNumber: "LTU-2204",
     vehicleModel: "Renault Clio",
     color: "Red",
@@ -57,7 +57,7 @@ const sampleCases = [
   {
     driverName: "Mindaugas Petrauskas",
     licenseNumber: "LT-00774",
-    address: "Klaipėda, Taikos 18",
+    address: "Klaipėda, Taikos Avenue 18",
     registrationNumber: "LTU-7741",
     vehicleModel: "Audi A4",
     color: "Black",
@@ -69,7 +69,7 @@ const sampleCases = [
   {
     driverName: "Rūta Kazlauskienė",
     licenseNumber: "LT-00339",
-    address: "Panevėžys, Respublikos 3",
+    address: "Panevėžys, Respublikos Street 3",
     registrationNumber: "LTU-3390",
     vehicleModel: "Ford Focus",
     color: "Blue",
@@ -81,7 +81,7 @@ const sampleCases = [
   {
     driverName: "Aleksas Jonaitis",
     licenseNumber: "LT-00241",
-    address: "Vilnius, Gedimino 5",
+    address: "Vilnius, Gedimino Avenue 5",
     registrationNumber: "LTU-4821",
     vehicleModel: "VW Golf",
     color: "Gray",
@@ -89,6 +89,35 @@ const sampleCases = [
     violationCode: "SP-01",
     violationDate: new Date("2026-04-30"),
     status: "pending",
+  },
+];
+
+const driverSeeds: Driver[] = [
+  {
+    firstName: "Emam",
+    lastName: "Hasan",
+    license: "LIC-1001",
+    city: "Vilnius",
+    street: "Gedimino Avenue",
+    houseNumber: "14A",
+    apartment: 5,
+  },
+  {
+    firstName: "Nadia",
+    lastName: "Rahman",
+    license: "LIC-1002",
+    city: "Panevėžys",
+    street: "Respublikos Street",
+    houseNumber: "22",
+  },
+  {
+    firstName: "Arif",
+    lastName: "Khan",
+    license: "LIC-1003",
+    city: "Kaunas",
+    street: "Laisvės Avenue",
+    houseNumber: "8",
+    apartment: 2,
   },
 ];
 
@@ -102,69 +131,47 @@ export async function GET() {
   await VehicleModel.deleteMany({});
   await ViolationModel.deleteMany({});
 
-  const drivers = await DriverModel.insertMany([
-    {
-      firstName: "Emam",
-      lastName: "Hasan",
-      license: "LIC-1001",
-      city: "Dhaka",
-      street: "Dhanmondi 27",
-      houseNumber: "14A",
-      apartment: 5,
-    },
-    {
-      firstName: "Nadia",
-      lastName: "Rahman",
-      license: "LIC-1002",
-      city: "Chattogram",
-      street: "CDA Avenue",
-      houseNumber: "22",
-    },
-    {
-      firstName: "Arif",
-      lastName: "Khan",
-      license: "LIC-1003",
-      city: "Sylhet",
-      street: "Zindabazar Road",
-      houseNumber: "8",
-      apartment: 2,
-    },
-  ]);
+  const drivers = await DriverModel.insertMany(driverSeeds);
+  const hasan = drivers[0];
+  const nadia = drivers[1];
+  const arif = drivers[2];
 
-  const [hasan, nadia, arif] = drivers;
+  if (!hasan?._id || !nadia?._id || !arif?._id) {
+    throw new Error("Driver seeding failed.");
+  }
 
-  await VehicleModel.insertMany([
+  const vehicleSeeds: Vehicle[] = [
     {
-      registrationNumber: "DHK-2041",
+      registrationNumber: "LTU-2041",
       model: "Toyota Corolla",
       color: "White",
       manufactureYear: 2021,
       driverId: hasan._id,
     },
     {
-      registrationNumber: "DHK-8820",
+      registrationNumber: "LTU-8820",
       model: "Honda Civic",
       color: "Black",
       manufactureYear: 2020,
       driverId: hasan._id,
     },
     {
-      registrationNumber: "CTG-5512",
+      registrationNumber: "LTU-5512",
       model: "Nissan X-Trail",
       color: "Silver",
       manufactureYear: 2019,
       driverId: nadia._id,
     },
     {
-      registrationNumber: "SYL-7781",
+      registrationNumber: "LTU-7781",
       model: "Suzuki Swift",
       color: "Blue",
       manufactureYear: 2022,
       driverId: arif._id,
     },
-  ]);
+  ];
 
-  await ViolationModel.insertMany([
+  const violationSeeds: Violation[] = [
     {
       violationMessage: "Overspeeding",
       date: new Date("2025-08-12"),
@@ -172,7 +179,7 @@ export async function GET() {
       driverId: hasan._id,
     },
     {
-      violationMessage: "Illegal Parking",
+      violationMessage: "Illegal parking",
       date: new Date("2025-08-15"),
       violationCode: "PK002",
       driverId: hasan._id,
@@ -183,15 +190,18 @@ export async function GET() {
       violationCode: "RDL-02",
       driverId: nadia._id,
     },
-  ]);
+  ];
+
+  await VehicleModel.insertMany(vehicleSeeds);
+  await ViolationModel.insertMany(violationSeeds);
 
   return NextResponse.json({
     ok: true,
     inserted: {
       trafficCases: sampleCases.length,
       drivers: drivers.length,
-      vehicles: 4,
-      violations: 3,
+      vehicles: vehicleSeeds.length,
+      violations: violationSeeds.length,
     },
     message: "Seeded traffic cases, drivers, vehicles, and violations.",
   });

@@ -1,14 +1,14 @@
-import { Schema, model, models, type Types } from "mongoose";
+import { Schema, model, models, type Model, type Types } from "mongoose";
 
 export type Vehicle = {
-  _id: string;
+  _id?: Types.ObjectId;
   registrationNumber: string;
   model: string;
   color: string;
   manufactureYear: number;
   driverId: Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 const vehicleSchema = new Schema<Vehicle>(
@@ -25,4 +25,6 @@ const vehicleSchema = new Schema<Vehicle>(
 vehicleSchema.index({ driverId: 1 });
 vehicleSchema.index({ model: 1, color: 1 });
 
-export const VehicleModel = models.Vehicle || model<Vehicle>("Vehicle", vehicleSchema);
+const existingVehicleModel = models.Vehicle as Model<Vehicle> | undefined;
+
+export const VehicleModel = existingVehicleModel ?? model<Vehicle>("Vehicle", vehicleSchema);

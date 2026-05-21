@@ -17,6 +17,7 @@ export default async function CaseDetailsPage({ params }: Props) {
   if (cases.length === 0) notFound();
 
   const first = cases[0];
+  if (!first) notFound();
 
   return (
     <main className="shell">

@@ -1,7 +1,7 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, type Model, type Types } from "mongoose";
 
 export type Driver = {
-  _id: string;
+  _id?: Types.ObjectId;
   firstName: string;
   lastName: string;
   license: string;
@@ -9,8 +9,8 @@ export type Driver = {
   street: string;
   houseNumber: string;
   apartment?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 const driverSchema = new Schema<Driver>(
@@ -34,4 +34,6 @@ if (models.Driver && !models.Driver.schema.path("houseNumber")) {
   mongoose.deleteModel("Driver");
 }
 
-export const DriverModel = models.Driver || model<Driver>("Driver", driverSchema);
+const existingDriverModel = models.Driver as Model<Driver> | undefined;
+
+export const DriverModel = existingDriverModel ?? model<Driver>("Driver", driverSchema);

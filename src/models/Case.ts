@@ -1,10 +1,10 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models, type Model, type Types } from "mongoose";
 
 export type ViolationCode = "SP-01" | "RL-02" | "PK-03" | "NB-04" | "DU-05" | "PH-06" | "OT-99";
 export type CaseStatus = "pending" | "completed";
 
 export type TrafficCase = {
-  _id: string;
+  _id?: Types.ObjectId;
   driverName: string;
   licenseNumber: string;
   address: string;
@@ -15,8 +15,8 @@ export type TrafficCase = {
   violationCode: ViolationCode;
   violationDate: Date;
   status: CaseStatus;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 const caseSchema = new Schema<TrafficCase>(
@@ -46,4 +46,6 @@ if (models.Case && !models.Case.schema.path("status")) {
   mongoose.deleteModel("Case");
 }
 
-export const CaseModel = models.Case || model<TrafficCase>("Case", caseSchema);
+const existingCaseModel = models.Case as Model<TrafficCase> | undefined;
+
+export const CaseModel = existingCaseModel ?? model<TrafficCase>("Case", caseSchema);

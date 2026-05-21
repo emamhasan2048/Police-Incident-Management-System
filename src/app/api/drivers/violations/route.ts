@@ -25,6 +25,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ driver: null, violations: [] });
   }
 
+  if (!driver._id) {
+    return NextResponse.json({ driver: null, violations: [] });
+  }
+
   const violations = await ViolationModel.find({ driverId: driver._id }).populate("driverId").sort({ date: -1 }).lean();
   return NextResponse.json({ driver, violations });
 }

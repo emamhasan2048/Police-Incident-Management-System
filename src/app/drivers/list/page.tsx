@@ -1,9 +1,39 @@
 import { AppNav } from "@/app/nav";
+import { connectMongo } from "@/lib/mongodb";
+import { DriverModel } from "@/models/Driver";
+import { DatabaseError } from "@/app/database-error";
 import { DriverListClient } from "../components/driver-list-client";
+import { type DriverRecord } from "@/features/drivers/types";
 
 export const dynamic = "force-dynamic";
 
-export default function DriverListPage() {
+async function getDriversForPage() {
+  try {
+    await connectMongo();
+    const drivers = await DriverModel.find().sort({ createdAt: -1 }).lean();
+
+    return {
+      databaseError: false,
+      drivers: drivers.map((driver) => ({
+        _id: driver._id?.toString() ?? "",
+        firstName: driver.firstName,
+        lastName: driver.lastName,
+        license: driver.license,
+        city: driver.city,
+        street: driver.street,
+        houseNumber: driver.houseNumber,
+        apartment: driver.apartment,
+      })),
+    };
+  } catch (error) {
+    console.error("Failed to load drivers:", error);
+    return { databaseError: true, drivers: [] as DriverRecord[] };
+  }
+}
+
+export default async function DriverListPage() {
+  const { databaseError, drivers } = await getDriversForPage();
+
   return (
     <main className="shell">
       <AppNav />
@@ -13,7 +43,9 @@ export default function DriverListPage() {
         <h1 className="text-2xl font-extrabold">Driver List</h1>
       </div>
 
-      <DriverListClient />
+      {databaseError && <DatabaseError />}
+
+      <DriverListClient initialDrivers={drivers} />
     </main>
   );
 }
