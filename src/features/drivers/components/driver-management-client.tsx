@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useModal } from "@/hooks/use-modal";
 import { type DriverFormValues } from "@/lib/validations/drivers";
 import { fetchDrivers, removeDriver, saveDriver } from "../api";
 import { type DriverRecord } from "../types";
@@ -11,7 +12,7 @@ import { DriverTable } from "./driver-table";
 
 export function DriverManagementClient({ initialDrivers }: { initialDrivers: DriverRecord[] }) {
   const [drivers, setDrivers] = useState<DriverRecord[]>(initialDrivers);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const driverDialog = useModal();
   const [editingDriver, setEditingDriver] = useState<DriverRecord | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -27,7 +28,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
     setError("");
     setDialogError("");
     setMessage("");
-    setDialogOpen(true);
+    driverDialog.open();
   }
 
   function openEditDialog(driver: DriverRecord) {
@@ -35,7 +36,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
     setError("");
     setDialogError("");
     setMessage("");
-    setDialogOpen(true);
+    driverDialog.open();
   }
 
   async function handleSaveDriver(values: DriverFormValues) {
@@ -47,7 +48,7 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
     try {
       await saveDriver(values, editingDriver?._id ?? null);
       await refreshDrivers();
-      setDialogOpen(false);
+      driverDialog.close();
       setEditingDriver(null);
       setMessage(editingDriver ? "Driver updated successfully." : "Driver created successfully.");
     } catch (saveError) {
@@ -102,9 +103,9 @@ export function DriverManagementClient({ initialDrivers }: { initialDrivers: Dri
         errorMessage={dialogError}
         isSubmitting={isSubmitting}
         mode={editingDriver ? "edit" : "create"}
-        open={dialogOpen}
+        open={driverDialog.isOpen}
         onOpenChange={(open) => {
-          setDialogOpen(open);
+          driverDialog.setIsOpen(open);
           if (!open) {
             setDialogError("");
           }

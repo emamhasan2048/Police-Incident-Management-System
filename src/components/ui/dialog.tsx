@@ -32,7 +32,7 @@ export const DialogContent = forwardRef<
       <DialogPrimitive.Content
         ref={ref}
         className={cn(
-          "fixed left-1/2 top-1/2 z-[51] max-h-[90vh] w-[calc(100vw-2rem)] max-w-5xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-3xl border border-zinc-200 bg-white p-10 shadow-[0_20px_60px_rgba(0,0,0,0.08)] outline-none data-[state=open]:animate-in data-[state=closed]:animate-out",
+          "fixed left-1/2 top-1/2 z-[51] max-h-[88vh] w-[calc(100vw-1.25rem)] max-w-5xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-4 shadow-[0_20px_60px_rgba(0,0,0,0.08)] outline-none data-[state=open]:animate-in data-[state=closed]:animate-out sm:w-[90vw] sm:rounded-3xl sm:p-6 lg:p-10",
           className,
         )}
         {...props}
@@ -55,7 +55,7 @@ export const DialogTitle = forwardRef<
   ElementRef<typeof DialogPrimitive.Title>,
   ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(function DialogTitle({ className, ...props }, ref) {
-  return <DialogPrimitive.Title ref={ref} className={cn("text-4xl font-bold tracking-tight text-zinc-900", className)} {...props} />;
+  return <DialogPrimitive.Title ref={ref} className={cn("text-2xl font-bold tracking-tight text-zinc-900 sm:text-4xl", className)} {...props} />;
 });
 
 export const DialogDescription = forwardRef<

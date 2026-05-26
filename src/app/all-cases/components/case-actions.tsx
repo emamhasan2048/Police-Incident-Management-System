@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useModal } from "@/hooks/use-modal";
 import type { CaseStatus } from "@/models/Case";
 
 type Props = {
@@ -14,6 +16,7 @@ export function CaseActions({ id, initialStatus }: Props) {
   const [status, setStatus] = useState(initialStatus);
   const [isDeleted, setIsDeleted] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const deleteDialog = useModal();
 
   if (isDeleted) return null;
 
@@ -46,6 +49,7 @@ export function CaseActions({ id, initialStatus }: Props) {
         return;
       }
 
+      deleteDialog.close();
       startTransition(() => router.refresh());
     } catch {
       setIsDeleted(false);
@@ -55,6 +59,7 @@ export function CaseActions({ id, initialStatus }: Props) {
   return (
     <>
       <div>
+        <span className="mb-1 block text-xs uppercase tracking-[0.14em] text-[var(--muted)] lg:hidden">Status</span>
         <span
           className={`rounded-full px-3 py-1 text-xs font-extrabold ${
             status === "completed" ? "bg-emerald-900/70 text-emerald-200" : "bg-amber-900/70 text-amber-200"
@@ -74,15 +79,18 @@ export function CaseActions({ id, initialStatus }: Props) {
             Complete
           </button>
         )}
-        <button
-          className="rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-extrabold text-red-700 hover:bg-red-100 disabled:opacity-60"
-          disabled={isPending}
-          onClick={deleteCase}
-          type="button"
-        >
+        <button className="rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-extrabold text-red-700 hover:bg-red-100 disabled:opacity-60" disabled={isPending} onClick={deleteDialog.open} type="button">
           Delete
         </button>
       </div>
+      <ConfirmDialog
+        description="This will permanently remove the case record from the registry. This action cannot be undone."
+        isPending={isPending}
+        onConfirm={deleteCase}
+        onOpenChange={deleteDialog.setIsOpen}
+        open={deleteDialog.isOpen}
+        title="Delete case?"
+      />
     </>
   );
 }

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Foreign Suppliers Management System</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link href="/css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-brand">
+          <span class="brand-mark"><i class="bi bi-globe2"></i></span>
+          <span class="brand-text">Foreign Suppliers</span>
+        </div>
+        <nav class="sidebar-nav">
+          <button class="nav-link active" data-view="home">
+            <i class="bi bi-house-door"></i><span>Home</span>
+          </button>
+
+          <button class="nav-link nav-parent" data-bs-toggle="collapse" data-bs-target="#companiesMenu">
+            <i class="bi bi-buildings"></i><span>Companies</span><i class="bi bi-chevron-down ms-auto"></i>
+          </button>
+          <div id="companiesMenu" class="collapse show submenu">
+            <button class="nav-link" data-view="company-list">Company List</button>
+            <button class="nav-link" data-view="company-details">Company Details</button>
+            <button class="nav-link" data-view="companies-country">Companies by Country</button>
+          </div>
+
+          <button class="nav-link nav-parent" data-bs-toggle="collapse" data-bs-target="#productsMenu">
+            <i class="bi bi-box-seam"></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
+          </button>
+          <div id="productsMenu" class="collapse submenu">
+            <button class="nav-link" data-view="product-list">Product List</button>
+            <button class="nav-link" data-view="products-company">Products by Company</button>
+            <button class="nav-link" data-view="product-offers">Product Offers</button>
+          </div>
+
+          <button class="nav-link nav-parent" data-bs-toggle="collapse" data-bs-target="#offersMenu">
+            <i class="bi bi-tags"></i><span>Offers</span><i class="bi bi-chevron-down ms-auto"></i>
+          </button>
+          <div id="offersMenu" class="collapse submenu">
+            <button class="nav-link" data-view="offer-list">Offer List</button>
+            <button class="nav-link" data-view="offers-product">Offers by Product</button>
+            <button class="nav-link" data-view="offers-country">Offers by Country</button>
+          </div>
+
+          <button class="nav-link" data-view="sales-terms">
+            <i class="bi bi-file-earmark-text"></i><span>Sales Terms</span>
+          </button>
+
+          <button class="nav-link nav-parent" data-bs-toggle="collapse" data-bs-target="#competitorsMenu">
+            <i class="bi bi-diagram-3"></i><span>Competitors</span><i class="bi bi-chevron-down ms-auto"></i>
+          </button>
+          <div id="competitorsMenu" class="collapse submenu">
+            <button class="nav-link" data-view="competitors">Competitor List</button>
+            <button class="nav-link" data-view="competitors-product">Competitors by Product</button>
+          </div>
+
+          <button class="nav-link nav-parent" data-bs-toggle="collapse" data-bs-target="#reportsMenu">
+            <i class="bi bi-bar-chart"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>
+          </button>
+          <div id="reportsMenu" class="collapse submenu">
+            <button class="nav-link" data-view="report-company">Company Offers Report</button>
+            <button class="nav-link" data-view="report-product">Product Offers Report</button>
+            <button class="nav-link" data-view="report-country">Country Offers Report</button>
+            <button class="nav-link" data-view="report-competitor">Competitor Report</button>
+          </div>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button id="sidebarToggle" class="btn btn-icon" title="Toggle sidebar">
+            <i class="bi bi-list"></i>
+          </button>
+          <div>
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="pageSubtitle">Manage foreign suppliers, products, offers, and reports.</p>
+          </div>
+          <div class="ms-auto d-flex align-items-center gap-3">
+            <span class="status-pill"><span class="status-dot"></span> Live API</span>
+          </div>
+        </header>
+
+        <section id="alerts" class="alerts"></section>
+        <section id="viewRoot" class="view-root"></section>
+      </main>
+    </div>
+
+    <div class="modal fade" id="entityModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Form</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="entityForm">
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check2"></i> Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/app.shared.js"></script>
+    <script src="/js/app.home.js"></script>
+    <script src="/js/app.companies.js"></script>
+    <script src="/js/app.catalog.js"></script>
+    <script src="/js/app.reports.js"></script>
+  </body>
+</html>

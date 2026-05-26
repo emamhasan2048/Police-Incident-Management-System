@@ -1,10 +1,13 @@
 import Link from "next/link";
-import { type NavigationItem } from "./navigation-data";
+import { type NavigationItem } from "@/config/navigation";
+import { cn } from "@/lib/utils";
 
-export function NavigationMenuItem({ item }: { item: NavigationItem }) {
+export function NavigationMenuItem({ item, pathname }: { item: NavigationItem; pathname: string }) {
+  const isActive = item.href === "/" ? pathname === "/" : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
   return (
     <div className="menu-item">
-      <Link className="menu-button" href={item.href}>
+      <Link className={cn("menu-button", isActive && "menu-button-active")} href={item.href}>
         {item.label}
         {item.children && <span className="menu-caret">v</span>}
       </Link>

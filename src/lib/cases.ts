@@ -54,8 +54,7 @@ export async function getCases() {
 export async function getCasesForPage() {
   try {
     return { cases: await getCases(), databaseError: false };
-  } catch (error) {
-    console.error("Failed to load cases:", error);
+  } catch {
     return { cases: [] as CaseView[], databaseError: true };
   }
 }
@@ -92,8 +91,7 @@ export async function createCase(formData: FormData) {
       violationDate: new Date(String(formData.get("violationDate") || new Date().toISOString())),
       status: "pending",
     });
-  } catch (error) {
-    console.error("Failed to create case:", error);
+  } catch {
     redirect("/?error=database");
   }
 

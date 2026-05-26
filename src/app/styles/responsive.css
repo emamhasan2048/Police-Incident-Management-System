@@ -1,0 +1,176 @@
+@media (max-width: 760px) {
+  .shell {
+    padding: 88px 14px 42px;
+  }
+
+  .dashboard-topbar {
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    height: auto;
+    justify-content: flex-start;
+    min-height: 64px;
+    padding: 10px 12px;
+  }
+
+  .dashboard-logo {
+    gap: 10px;
+    height: auto;
+    min-width: 0;
+    padding: 6px 8px;
+  }
+
+  .dashboard-logo-emblem {
+    font-size: 18px;
+    height: 38px;
+    width: 38px;
+  }
+
+  .dashboard-logo-text {
+    font-size: 13px;
+  }
+
+  .dashboard-title {
+    display: none;
+  }
+
+  .dashboard-menu {
+    display: none;
+  }
+
+  .dashboard-sidebar {
+    display: none;
+  }
+
+  .field {
+    font-size: 15px;
+    min-height: 44px;
+    padding: 12px 14px;
+  }
+
+  .label,
+  .nav-button,
+  .menu-button {
+    font-size: 14px;
+  }
+
+  .nav-button {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .menu-bar {
+    display: none;
+  }
+
+  .menu-item {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 112px;
+  }
+
+  .menu-button {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.14);
+    min-height: 32px;
+    padding: 0 9px;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .submenu-panel {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .auth-status {
+    margin: 0;
+  }
+
+  .auth-status span {
+    display: none;
+  }
+
+  .auth-status .nav-button {
+    min-height: 36px;
+    width: auto;
+  }
+
+  .navbar-auth-action {
+    align-self: center;
+    margin: 0;
+    margin-left: auto;
+  }
+
+  .navbar-login-button {
+    min-height: 38px;
+    padding: 0 16px;
+    width: auto;
+  }
+
+  .mobile-nav {
+    display: block;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+  .shell {
+    padding-top: 196px;
+  }
+
+  .dashboard-topbar {
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 152px;
+    padding-bottom: 14px;
+    padding-top: 14px;
+  }
+
+  .dashboard-logo {
+    height: 74px;
+  }
+
+  .dashboard-menu {
+    align-self: center;
+    flex-basis: calc(100% - 250px);
+    margin-bottom: 0;
+  }
+
+  .dashboard-sidebar {
+    padding-top: 152px;
+  }
+
+  .dashboard-sidebar::before {
+    height: 152px;
+  }
+
+  .menu-button {
+    min-height: 34px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .shell {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 82px;
+  }
+
+  .dashboard-topbar {
+    gap: 8px;
+  }
+
+  .menu-item {
+    flex-basis: 100%;
+  }
+
+  .dashboard-logo-text {
+    display: none;
+  }
+
+  .navbar-login-button {
+    font-size: 11px;
+    padding: 0 13px;
+  }
+}

@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
+    "supplier:dev": "node server.js",
+    "supplier:start": "node server.js",
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
@@ -12,6 +14,10 @@
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-dialog": "^1.1.15",
     "clsx": "^2.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "lucide-react": "^1.16.0",
     "mongoose": "^9.3.0",
     "next": "16.1.6",
     "react": "19.2.3",

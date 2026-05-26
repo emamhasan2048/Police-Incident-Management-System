@@ -3,6 +3,7 @@ import { getCases, getCasesForPage } from "@/lib/cases";
 import { badgeTone } from "@/lib/violations";
 import { DatabaseError } from "../database-error";
 import { AppNav } from "../nav";
+import { QueryForms } from "./components/query-forms";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -62,71 +63,20 @@ export default async function QueriesPage({ searchParams }: Props) {
 
       {databaseError && <DatabaseError />}
 
-      <div className="space-y-5">
-        <QueryCard icon="#" title="Who owns a vehicle with registration number?">
-          <form className="grid gap-3 md:grid-cols-[1fr_auto]">
-            <input className="field" name="registration" placeholder="e.g. LTU-4821" defaultValue={registration} />
-            <button className="nav-button justify-center" type="submit">
-              Search
-            </button>
-          </form>
-          {registration && <OwnerResults cases={byRegistration} />}
-        </QueryCard>
-
-        <QueryCard icon="*" title="Who owns a vehicle by model & color?">
-          <form className="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-            <input className="field" name="model" placeholder="Model e.g. VW Golf" defaultValue={getParam(params, "model")} />
-            <input className="field" name="color" placeholder="Color e.g. Gray" defaultValue={getParam(params, "color")} />
-            <button className="nav-button justify-center" type="submit">
-              Search
-            </button>
-          </form>
-          {(model || color) && <OwnerResults cases={byModelColor} />}
-        </QueryCard>
-
-        <QueryCard icon="!" title="Violations committed by a driver (license no.)">
-          <form className="grid gap-3 md:grid-cols-[1fr_auto]">
-            <input className="field" name="license" placeholder="e.g. LT-00241" defaultValue={license} />
-            <button className="nav-button justify-center" type="submit">
-              Search
-            </button>
-          </form>
-          {license && <ViolationResults cases={byLicense} />}
-        </QueryCard>
-
-        <QueryCard icon="@" title="List of offenders (drivers with violations)">
-          <form>
-            <input name="show" type="hidden" value="offenders" />
-            <button className="nav-button" type="submit">
-              Show offenders
-            </button>
-          </form>
-          {showOffenders && <OffenderResults cases={offenders} />}
-        </QueryCard>
-
-        <QueryCard icon="%" title="Number of vehicles by model and year">
-          <form>
-            <input name="show" type="hidden" value="stats" />
-            <button className="nav-button" type="submit">
-              Show stats
-            </button>
-          </form>
-          {showStats && <StatsResults stats={stats} />}
-        </QueryCard>
-      </div>
+      <QueryForms
+        color={getParam(params, "color")}
+        license={license}
+        model={getParam(params, "model")}
+        registration={registration}
+        showOffenders={showOffenders}
+        showStats={showStats}
+        licenseResults={license ? <ViolationResults cases={byLicense} /> : null}
+        modelColorResults={model || color ? <OwnerResults cases={byModelColor} /> : null}
+        offenderResults={<OffenderResults cases={offenders} />}
+        registrationResults={registration ? <OwnerResults cases={byRegistration} /> : null}
+        statsResults={<StatsResults stats={stats} />}
+      />
     </main>
-  );
-}
-
-function QueryCard({ children, icon, title }: { children: React.ReactNode; icon: string; title: string }) {
-  return (
-    <section className="card p-5">
-      <h2 className="mb-4 flex items-center gap-2 text-base font-extrabold text-[var(--muted)]">
-        <span>{icon}</span>
-        {title}
-      </h2>
-      {children}
-    </section>
   );
 }
 

@@ -31,7 +31,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "A driver with this first name and last name already exists." }, { status: 409 });
     }
 
-    console.error("Failed to create driver:", error);
     return NextResponse.json({ message: "Failed to create driver." }, { status: 500 });
   }
 }

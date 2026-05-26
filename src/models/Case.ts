@@ -41,6 +41,9 @@ const caseSchema = new Schema<TrafficCase>(
 
 caseSchema.index({ registrationNumber: 1, violationDate: -1 });
 caseSchema.index({ driverName: 1 });
+caseSchema.index({ licenseNumber: 1, violationDate: -1 });
+caseSchema.index({ violationCode: 1, violationDate: -1 });
+caseSchema.index({ status: 1, violationDate: -1 });
 
 if (models.Case && !models.Case.schema.path("status")) {
   mongoose.deleteModel("Case");

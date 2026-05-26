@@ -29,6 +29,7 @@ const driverSchema = new Schema<Driver>(
 driverSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
 driverSchema.index({ license: 1 });
 driverSchema.index({ lastName: 1 });
+driverSchema.index({ lastName: 1, license: 1 });
 
 if (models.Driver && !models.Driver.schema.path("houseNumber")) {
   mongoose.deleteModel("Driver");

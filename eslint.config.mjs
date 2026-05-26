@@ -7,6 +7,25 @@ const eslintConfig = [
   {
     ignores: [".next/**", "next-env.d.ts"],
   },
+  {
+    files: [
+      "config/**/*.js",
+      "controllers/**/*.js",
+      "middleware/**/*.js",
+      "models/**/*.js",
+      "routes/**/*.js",
+      "server.js",
+    ],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
+    files: ["public/js/**/*.js"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

@@ -1,44 +1,37 @@
-import Link from "next/link";
+import { redirect } from "next/navigation";
+import { AuthPanel } from "@/components/auth/auth-panel";
+import { getAuthSession } from "@/lib/auth";
 import { AppNav } from "./nav";
 
-const dashboardCards = [
-  {
-    title: "Driver List",
-    description: "Create, update, view, and remove driver records with duplicate name protection.",
-    href: "/drivers/list",
-  },
-  {
-    title: "Driver Details",
-    description: "Search a driver by last name or license number and review assigned vehicles.",
-    href: "/drivers/details",
-  },
-  {
-    title: "Driver Violations",
-    description: "Lookup all driver violations by last name, including code, date, and message.",
-    href: "/drivers/violations",
-  },
-];
+type Props = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
 
-export default function HomePage() {
+function getParam(searchParams: Record<string, string | string[] | undefined>, key: string) {
+  const value = searchParams[key];
+  return Array.isArray(value) ? value[0] ?? "" : value ?? "";
+}
+
+export default async function HomePage({ searchParams }: Props) {
+  const session = await getAuthSession();
+  const params = await searchParams;
+  const returnTo = getParam(params, "returnTo") || "/overview";
+
+  if (session?.role === "ADMIN") {
+    redirect("/admin/dropdowns");
+  }
+
+  if (session?.role === "USER") {
+    redirect("/overview");
+  }
+
   return (
     <main className="shell">
       <AppNav />
 
-      <section className="mb-7">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Command dashboard</p>
-        <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-zinc-950">Police Incident Management System</h1>
-        <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-zinc-500">
-          Manage driver profiles, linked vehicles, and violation records from one clean operational dashboard.
-        </p>
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-3">
-        {dashboardCards.map((card) => (
-          <Link className="card block p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_24px_70px_rgba(37,99,235,0.12)]" href={card.href} key={card.title}>
-            <h2 className="text-lg font-extrabold text-zinc-950">{card.title}</h2>
-            <p className="mt-3 text-sm font-semibold leading-6 text-zinc-500">{card.description}</p>
-          </Link>
-        ))}
+      <section className="mx-auto max-w-5xl">
+        <h1 className="sr-only">Police Incident Management System Login</h1>
+        <AuthPanel returnTo={returnTo} session={session} />
       </section>
     </main>
   );
